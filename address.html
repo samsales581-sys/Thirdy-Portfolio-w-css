@@ -23,34 +23,51 @@
         /* ── BACKGROUND ── */
         .bg-canvas {
             position: fixed;
-            inset: 0;
-            z-index: 0;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             pointer-events: none;
+            z-index: 0;
         }
 
-        @keyframes spin-slow {
-            from { transform: rotate(0deg); }
-            to   { transform: rotate(360deg); }
-        }
-
+        /* ── BACKGROUND ANIMATIONS (same as index.html) ── */
+        @keyframes spin-slow     { from{transform:rotate(0deg)}   to{transform:rotate(360deg)} }
+        @keyframes spin-slow-rev { from{transform:rotate(0deg)}   to{transform:rotate(-360deg)} }
         @keyframes fl1 { 0%,100%{opacity:.75} 50%{opacity:.50} }
         @keyframes fl2 { 0%,100%{opacity:.60} 50%{opacity:.38} }
         @keyframes fl3 { 0%,100%{opacity:.80} 50%{opacity:.55} }
         @keyframes fl4 { 0%,100%{opacity:.35} 50%{opacity:.18} }
         @keyframes fl5 { 0%,100%{opacity:.55} 50%{opacity:.30} }
-        @keyframes pulse-line {
-            0%,100%{opacity:0.18;}
-            50%{opacity:0.5;}
-        }
-        .d1 { animation: fl1 8s ease-in-out infinite; }
-        .d2 { animation: fl2 10s ease-in-out infinite; }
-        .d3 { animation: fl3 7s  ease-in-out infinite; }
-        .d4 { animation: fl4 12s ease-in-out infinite; }
-        .d5 { animation: fl5 9s  ease-in-out infinite; }
+        @keyframes float-y     { 0%,100%{transform:translateY(0)}   50%{transform:translateY(-18px)} }
+        @keyframes float-y-alt { 0%,100%{transform:translateY(0)}   50%{transform:translateY(14px)}  }
+        @keyframes float-x     { 0%,100%{transform:translateX(0)}   50%{transform:translateX(12px)}  }
+        @keyframes drift-diag  { 0%,100%{transform:translate(0,0)}  50%{transform:translate(10px,-12px)} }
+        @keyframes pulse-line  { 0%,100%{opacity:0.18;} 50%{opacity:0.5;} }
+        @keyframes pulse-glow  { 0%,100%{opacity:0.5;transform:scale(1);} 50%{opacity:0.9;transform:scale(1.25);} }
+        @keyframes rotate-bl   { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        @keyframes rotate-tr   { from{transform:rotate(0deg)} to{transform:rotate(-360deg)} }
+        @keyframes breathe     { 0%,100%{transform:scale(1);opacity:0.55;} 50%{transform:scale(1.1);opacity:0.85;} }
+        @keyframes march       { from{stroke-dashoffset:0;} to{stroke-dashoffset:-200;} }
+        @keyframes twinkle     { 0%,100%{opacity:0.7;} 50%{opacity:0.1;} }
+
+        .d1 { animation: float-y      8s ease-in-out infinite; }
+        .d2 { animation: float-y-alt 10s ease-in-out infinite; }
+        .d3 { animation: float-x      7s ease-in-out infinite; }
+        .d4 { animation: drift-diag   9s ease-in-out infinite; }
+        .d5 { stroke-dasharray:25 6; animation: march 3s linear infinite, breathe 5s ease-in-out infinite; }
         .pl  { animation: pulse-line 4s ease-in-out infinite; }
         .pl2 { animation: pulse-line 6s ease-in-out infinite 1s; }
         .pl3 { animation: pulse-line 5s ease-in-out infinite 2s; }
+        .bl-spin { transform-origin:0px 900px; animation:rotate-bl 60s linear infinite; }
+        .tr-spin { transform-origin:1440px 0px; animation:rotate-tr 50s linear infinite; }
+        .glow-circle  { transform-box:fill-box; transform-origin:center; animation:pulse-glow 4s ease-in-out infinite; }
+        .glow-circle-2{ transform-box:fill-box; transform-origin:center; animation:pulse-glow 6s ease-in-out infinite 1.5s; }
+        .vtx { animation: twinkle 3s ease-in-out infinite; }
+        .vtx:nth-child(odd)  { animation-duration: 2.2s; }
+        .vtx:nth-child(even) { animation-duration: 4.1s; animation-delay: 0.8s; }
 
+        /* ── NAV ── */
         nav {
             position: fixed;
             top: 0;
@@ -200,7 +217,7 @@
 </head>
 <body>
 
-    <!-- ══ POLYGON BACKGROUND ══ -->
+    <!-- ── ANIMATED BACKGROUND (same as index.html) ── -->
     <div class="bg-canvas">
       <svg width="100%" height="100%" viewBox="0 0 1440 900"
            preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
@@ -254,120 +271,110 @@
         <rect x="0" y="0" width="1440" height="900" fill="url(#glowBR)"/>
         <rect x="0" y="0" width="1440" height="900" fill="url(#glowTL)"/>
 
-        <!-- Bottom-left corner -->
-        <polygon class="d1" points="0,900 280,900 0,560" fill="#cc1100" opacity="0.75"/>
-        <polygon class="d2" points="0,900 200,900 0,660" fill="#ff2200" opacity="0.60"/>
-        <polygon class="d3" points="0,900 115,900 0,795" fill="#ff3300" opacity="0.80"/>
-        <polygon class="d4" points="0,900 330,900 0,500" fill="none" stroke="#ff4444" stroke-width="1" opacity="0.35"/>
-        <polygon          points="0,900 65,900 0,858"  fill="#ff5533" opacity="0.50"/>
-        <polygon class="d5" points="45,830 130,830 88,758" fill="none" stroke="#ff3333" stroke-width="1.5" opacity="0.55"/>
-        <polygon class="d3" points="18,875 80,875 49,825" fill="#cc1100" opacity="0.40"/>
-        <polygon class="d2" points="160,870 220,870 190,815" fill="none" stroke="#ff4444" stroke-width="1" opacity="0.40"/>
-        <circle cx="160" cy="840" r="90" fill="url(#glow1)" opacity="0.50"/>
+        <g class="bl-spin">
+          <polygon class="d1" points="0,900 280,900 0,560" fill="#cc1100" opacity="0.75"/>
+          <polygon class="d2" points="0,900 200,900 0,660" fill="#ff2200" opacity="0.60"/>
+          <polygon class="d3" points="0,900 115,900 0,795" fill="#ff3300" opacity="0.80"/>
+          <polygon class="d4" points="0,900 330,900 0,500" fill="none" stroke="#ff4444" stroke-width="1" opacity="0.35"/>
+          <polygon          points="0,900 65,900 0,858"  fill="#ff5533" opacity="0.50"/>
+          <polygon class="d5" points="45,830 130,830 88,758" fill="none" stroke="#ff3333" stroke-width="1.5" opacity="0.55"/>
+          <polygon class="d3" points="18,875 80,875 49,825" fill="#cc1100" opacity="0.40"/>
+          <polygon class="d2" points="160,870 220,870 190,815" fill="none" stroke="#ff4444" stroke-width="1" opacity="0.40"/>
+        </g>
+        <circle class="glow-circle" cx="160" cy="840" r="90" fill="url(#glow1)" opacity="0.50"/>
 
-        <!-- Top-right corner -->
-        <polygon class="d2" points="1440,0 1440,360 1170,0" fill="#cc1100" opacity="0.75"/>
-        <polygon class="d1" points="1440,0 1440,250 1260,0" fill="#ff2200" opacity="0.60"/>
-        <polygon class="d3" points="1440,0 1440,135 1365,0" fill="#ff3300" opacity="0.80"/>
-        <polygon class="d5" points="1440,0 1440,430 1110,0" fill="none" stroke="#ff4444" stroke-width="1" opacity="0.28"/>
-        <polygon          points="1440,0 1440,70  1420,0"  fill="#ff5533" opacity="0.55"/>
-        <polygon class="d4" points="1340,55 1425,55 1425,145" fill="none" stroke="#ff5555" stroke-width="1.5" opacity="0.55"/>
-        <polygon class="d2" points="1365,20 1435,20 1435,95" fill="#cc1100" opacity="0.35"/>
-        <polygon class="d1" points="1210,30 1280,30 1245,95" fill="none" stroke="#ff3333" stroke-width="1" opacity="0.45"/>
-        <circle cx="1300" cy="90" r="95" fill="url(#glow1)" opacity="0.45"/>
+        <g class="tr-spin">
+          <polygon class="d2" points="1440,0 1440,360 1170,0" fill="#cc1100" opacity="0.75"/>
+          <polygon class="d1" points="1440,0 1440,250 1260,0" fill="#ff2200" opacity="0.60"/>
+          <polygon class="d3" points="1440,0 1440,135 1365,0" fill="#ff3300" opacity="0.80"/>
+          <polygon class="d5" points="1440,0 1440,430 1110,0" fill="none" stroke="#ff4444" stroke-width="1" opacity="0.28"/>
+          <polygon          points="1440,0 1440,70  1420,0"  fill="#ff5533" opacity="0.55"/>
+          <polygon class="d4" points="1340,55 1425,55 1425,145" fill="none" stroke="#ff5555" stroke-width="1.5" opacity="0.55"/>
+          <polygon class="d2" points="1365,20 1435,20 1435,95" fill="#cc1100" opacity="0.35"/>
+          <polygon class="d1" points="1210,30 1280,30 1245,95" fill="none" stroke="#ff3333" stroke-width="1" opacity="0.45"/>
+        </g>
+        <circle class="glow-circle-2" cx="1300" cy="90" r="95" fill="url(#glow1)" opacity="0.45"/>
 
-        <!-- Top-left corner -->
         <polygon class="d3" points="0,0 140,0 0,150"  fill="#880000" opacity="0.55"/>
         <polygon class="d1" points="0,0 75,0 0,85"    fill="#aa1100" opacity="0.45"/>
         <polygon          points="0,0 175,0 0,185"   fill="none" stroke="#ff4444" stroke-width="1" opacity="0.22"/>
         <polygon class="d5" points="90,25 155,25 123,82" fill="none" stroke="#ff4444" stroke-width="1.5" opacity="0.40"/>
-        <circle cx="60" cy="60" r="55" fill="url(#glow1)" opacity="0.30"/>
+        <circle class="glow-circle" cx="60" cy="60" r="55" fill="url(#glow1)" opacity="0.30"/>
 
-        <!-- Bottom-right corner -->
         <polygon class="d2" points="1440,900 1440,730 1285,900" fill="#880000" opacity="0.55"/>
         <polygon class="d4" points="1440,900 1440,820 1375,900" fill="#aa1100" opacity="0.48"/>
         <polygon          points="1440,900 1440,655 1215,900" fill="none" stroke="#ff4444" stroke-width="1" opacity="0.22"/>
         <polygon class="d3" points="1300,870 1370,870 1335,815" fill="none" stroke="#ff5555" stroke-width="1.2" opacity="0.40"/>
 
-        <!-- Center-left floating triangles -->
         <polygon class="d5" points="70,370 155,505 25,505"   fill="none" stroke="#ff3333" stroke-width="1.5" opacity="0.55"/>
         <polygon class="d3" points="90,410 148,496 55,496"   fill="#cc1100" opacity="0.35"/>
         <polygon class="d1" points="30,270 95,370 0,370"     fill="none" stroke="#ff4444" stroke-width="1" opacity="0.35"/>
 
-        <!-- Center-right floating triangles -->
         <polygon class="d1" points="1310,340 1405,480 1240,480" fill="none" stroke="#ff3333" stroke-width="1.5" opacity="0.50"/>
         <polygon class="d4" points="1330,375 1385,458 1278,458" fill="#cc1100" opacity="0.30"/>
         <polygon class="d2" points="1380,230 1440,320 1320,320" fill="none" stroke="#ff4444" stroke-width="1" opacity="0.35"/>
 
-        <!-- Upper-center lone triangle -->
         <polygon class="d3" points="720,45 785,155 655,155" fill="none" stroke="#ff3333" stroke-width="1" opacity="0.35"/>
-
-        <!-- Lower-center lone triangle -->
         <polygon class="d5" points="720,855 785,760 655,760" fill="none" stroke="#ff4444" stroke-width="1" opacity="0.30"/>
 
-        <!-- Spinning wireframe triangles -->
         <g style="transform-origin:720px 450px; animation:spin-slow 45s linear infinite;">
-            <polygon points="720,320 828,515 612,515" fill="none" stroke="#ff3333" stroke-width="0.7" opacity="0.12"/>
+            <polygon points="720,320 828,515 612,515" fill="none" stroke="#ff3333" stroke-width="0.7" opacity="0.20"/>
         </g>
-        <g style="transform-origin:720px 450px; animation:spin-slow 60s linear infinite reverse;">
-            <polygon points="720,265 866,515 574,515" fill="none" stroke="#ff2200" stroke-width="0.5" opacity="0.10"/>
+        <g style="transform-origin:720px 450px; animation:spin-slow-rev 60s linear infinite;">
+            <polygon points="720,265 866,515 574,515" fill="none" stroke="#ff2200" stroke-width="0.5" opacity="0.16"/>
+        </g>
+        <g style="transform-origin:720px 450px; animation:spin-slow 30s linear infinite;">
+            <polygon points="720,350 800,490 640,490" fill="none" stroke="#ff5533" stroke-width="0.4" opacity="0.12" stroke-dasharray="18 9"/>
         </g>
 
-        <!-- Diagonal lines -->
-        <line class="pl"  x1="0"    y1="160" x2="920"  y2="900" stroke="url(#lineDiag1)" stroke-width="1.0"/>
-        <line class="pl2" x1="0"    y1="260" x2="820"  y2="900" stroke="url(#lineDiag1)" stroke-width="0.6"/>
-        <line class="pl3" x1="0"    y1="70"  x2="970"  y2="900" stroke="#ff4444"         stroke-width="0.4" opacity="0.15"/>
-        <line class="pl2" x1="1440" y1="190" x2="510"  y2="900" stroke="url(#lineDiag2)" stroke-width="1.0"/>
-        <line class="pl"  x1="1440" y1="95"  x2="610"  y2="900" stroke="url(#lineDiag2)" stroke-width="0.6"/>
-        <line class="pl3" x1="1440" y1="310" x2="425"  y2="900" stroke="#ff3333"         stroke-width="0.4" opacity="0.15"/>
+        <line class="pl"  x1="0"   y1="160" x2="920" y2="900" stroke="url(#lineDiag1)" stroke-width="1.0"/>
+        <line class="pl2" x1="0"   y1="260" x2="820" y2="900" stroke="url(#lineDiag1)" stroke-width="0.6"/>
+        <line class="pl3" x1="0"   y1="70"  x2="970" y2="900" stroke="#ff4444"         stroke-width="0.4" opacity="0.15"/>
+        <line class="pl2" x1="1440" y1="190" x2="510" y2="900" stroke="url(#lineDiag2)" stroke-width="1.0"/>
+        <line class="pl"  x1="1440" y1="95"  x2="610" y2="900" stroke="url(#lineDiag2)" stroke-width="0.6"/>
+        <line class="pl3" x1="1440" y1="310" x2="425" y2="900" stroke="#ff3333"         stroke-width="0.4" opacity="0.15"/>
 
-        <!-- Horizontal lines -->
-        <line class="pl"  x1="0"    y1="435" x2="420"  y2="435" stroke="url(#lineH)" stroke-width="1.2"/>
-        <line class="pl2" x1="0"    y1="455" x2="370"  y2="455" stroke="url(#lineH)" stroke-width="0.5"/>
-        <line class="pl3" x1="0"    y1="415" x2="280"  y2="415" stroke="url(#lineH)" stroke-width="0.4" opacity="0.15"/>
+        <line class="pl"  x1="0"   y1="435" x2="420" y2="435" stroke="url(#lineH)" stroke-width="1.2"/>
+        <line class="pl2" x1="0"   y1="455" x2="370" y2="455" stroke="url(#lineH)" stroke-width="0.5"/>
+        <line class="pl3" x1="0"   y1="415" x2="280" y2="415" stroke="url(#lineH)" stroke-width="0.4" opacity="0.15"/>
         <line class="pl3" x1="1440" y1="435" x2="1040" y2="435" stroke="url(#lineH)" stroke-width="1.2"/>
         <line class="pl"  x1="1440" y1="455" x2="1070" y2="455" stroke="url(#lineH)" stroke-width="0.5"/>
         <line class="pl2" x1="1440" y1="415" x2="1150" y2="415" stroke="url(#lineH)" stroke-width="0.4" opacity="0.15"/>
 
-        <!-- Vertical lines -->
-        <line class="pl2" x1="210"  y1="0"   x2="210"  y2="310" stroke="url(#lineV)" stroke-width="0.9"/>
-        <line class="pl3" x1="228"  y1="0"   x2="228"  y2="270" stroke="url(#lineV)" stroke-width="0.4"/>
-        <line class="pl"  x1="1232" y1="0"   x2="1232" y2="310" stroke="url(#lineV)" stroke-width="0.9"/>
-        <line class="pl2" x1="1250" y1="0"   x2="1250" y2="260" stroke="url(#lineV)" stroke-width="0.4"/>
+        <line class="pl2" x1="210" y1="0"   x2="210" y2="310" stroke="url(#lineV)" stroke-width="0.9"/>
+        <line class="pl3" x1="228" y1="0"   x2="228" y2="270" stroke="url(#lineV)" stroke-width="0.4"/>
+        <line class="pl"  x1="1232" y1="0"  x2="1232" y2="310" stroke="url(#lineV)" stroke-width="0.9"/>
+        <line class="pl2" x1="1250" y1="0"  x2="1250" y2="260" stroke="url(#lineV)" stroke-width="0.4"/>
         <line class="pl"  x1="210"  y1="900" x2="210"  y2="610" stroke="url(#lineV)" stroke-width="0.9"/>
         <line class="pl3" x1="228"  y1="900" x2="228"  y2="650" stroke="url(#lineV)" stroke-width="0.4"/>
         <line class="pl2" x1="1232" y1="900" x2="1232" y2="610" stroke="url(#lineV)" stroke-width="0.9"/>
         <line class="pl"  x1="1250" y1="900" x2="1250" y2="660" stroke="url(#lineV)" stroke-width="0.4"/>
 
-        <!-- Cross-hatch corners -->
-        <line class="pl"  x1="0"    y1="700" x2="200"  y2="900" stroke="#ff4444" stroke-width="0.8" opacity="0.30"/>
-        <line class="pl2" x1="55"   y1="700" x2="255"  y2="900" stroke="#ff3333" stroke-width="0.5" opacity="0.25"/>
-        <line class="pl3" x1="110"  y1="700" x2="305"  y2="900" stroke="#ff4444" stroke-width="0.3" opacity="0.18"/>
-        <line class="pl"  x1="1440" y1="195" x2="1248" y2="0"   stroke="#ff4444" stroke-width="0.8" opacity="0.30"/>
-        <line class="pl2" x1="1440" y1="295" x2="1198" y2="0"   stroke="#ff3333" stroke-width="0.5" opacity="0.25"/>
-        <line class="pl3" x1="1440" y1="140" x2="1300" y2="0"   stroke="#ff5555" stroke-width="0.3" opacity="0.18"/>
+        <line class="pl"  x1="0"   y1="700" x2="200" y2="900" stroke="#ff4444" stroke-width="0.8" opacity="0.30"/>
+        <line class="pl2" x1="55"  y1="700" x2="255" y2="900" stroke="#ff3333" stroke-width="0.5" opacity="0.25"/>
+        <line class="pl3" x1="110" y1="700" x2="305" y2="900" stroke="#ff4444" stroke-width="0.3" opacity="0.18"/>
+        <line class="pl"  x1="1440" y1="195" x2="1248" y2="0" stroke="#ff4444" stroke-width="0.8" opacity="0.30"/>
+        <line class="pl2" x1="1440" y1="295" x2="1198" y2="0" stroke="#ff3333" stroke-width="0.5" opacity="0.25"/>
+        <line class="pl3" x1="1440" y1="140" x2="1300" y2="0" stroke="#ff5555" stroke-width="0.3" opacity="0.18"/>
 
-        <!-- Extra angled lines -->
-        <line class="pl2" x1="350"  y1="0"   x2="0"    y2="350"  stroke="#ff3333" stroke-width="0.5" opacity="0.18"/>
-        <line class="pl"  x1="1090" y1="900" x2="1440" y2="550"  stroke="#ff3333" stroke-width="0.5" opacity="0.18"/>
+        <line class="pl2" x1="350" y1="0"   x2="0"    y2="350"  stroke="#ff3333" stroke-width="0.5" opacity="0.18"/>
+        <line class="pl"  x1="1090" y1="900" x2="1440" y2="550" stroke="#ff3333" stroke-width="0.5" opacity="0.18"/>
 
-        <!-- Vertex dots -->
-        <circle cx="280"  cy="900" r="2.5" fill="#ff4444" opacity="0.70"/>
-        <circle cx="200"  cy="900" r="2.0" fill="#ff3333" opacity="0.65"/>
-        <circle cx="0"    cy="560" r="2.5" fill="#ff4444" opacity="0.65"/>
-        <circle cx="1170" cy="0"   r="2.5" fill="#ff4444" opacity="0.68"/>
-        <circle cx="1365" cy="0"   r="2.0" fill="#ff3333" opacity="0.62"/>
-        <circle cx="1440" cy="360" r="2.5" fill="#ff4444" opacity="0.65"/>
-        <circle cx="140"  cy="0"   r="2.0" fill="#ff3333" opacity="0.55"/>
-        <circle cx="0"    cy="150" r="2.0" fill="#ff4444" opacity="0.55"/>
-        <circle cx="1285" cy="900" r="2.0" fill="#ff3333" opacity="0.55"/>
-        <circle cx="155"  cy="505" r="2.0" fill="#ff3333" opacity="0.50"/>
-        <circle cx="1405" cy="480" r="2.0" fill="#ff4444" opacity="0.48"/>
-        <circle cx="785"  cy="155" r="1.8" fill="#ff3333" opacity="0.45"/>
-        <circle cx="785"  cy="760" r="1.8" fill="#ff4444" opacity="0.42"/>
+        <circle class="vtx" cx="280"  cy="900" r="2.5" fill="#ff4444" opacity="0.70"/>
+        <circle class="vtx" cx="200"  cy="900" r="2.0" fill="#ff3333" opacity="0.65"/>
+        <circle class="vtx" cx="0"    cy="560" r="2.5" fill="#ff4444" opacity="0.65"/>
+        <circle class="vtx" cx="1170" cy="0"   r="2.5" fill="#ff4444" opacity="0.68"/>
+        <circle class="vtx" cx="1365" cy="0"   r="2.0" fill="#ff3333" opacity="0.62"/>
+        <circle class="vtx" cx="1440" cy="360" r="2.5" fill="#ff4444" opacity="0.65"/>
+        <circle class="vtx" cx="140"  cy="0"   r="2.0" fill="#ff3333" opacity="0.55"/>
+        <circle class="vtx" cx="0"    cy="150" r="2.0" fill="#ff4444" opacity="0.55"/>
+        <circle class="vtx" cx="1285" cy="900" r="2.0" fill="#ff3333" opacity="0.55"/>
+        <circle class="vtx" cx="155"  cy="505" r="2.0" fill="#ff3333" opacity="0.50"/>
+        <circle class="vtx" cx="1405" cy="480" r="2.0" fill="#ff4444" opacity="0.48"/>
+        <circle class="vtx" cx="785"  cy="155" r="1.8" fill="#ff3333" opacity="0.45"/>
+        <circle class="vtx" cx="785"  cy="760" r="1.8" fill="#ff4444" opacity="0.42"/>
       </svg>
     </div>
-    <!-- ══ END POLYGON BACKGROUND ══ -->
 
     <nav>
         <ul>
