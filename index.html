@@ -23,7 +23,7 @@
             overflow-x: hidden;
         }
 
-        /* ── BACKGROUND ── */
+       
         .bg-canvas {
             position: fixed;
             top: 0;
@@ -34,7 +34,6 @@
             z-index: 0;
         }
 
-        /* ── BACKGROUND ANIMATIONS (ALL UNCHANGED) ── */
         @keyframes spin-slow     { from{transform:rotate(0deg)}   to{transform:rotate(360deg)} }
         @keyframes spin-slow-rev { from{transform:rotate(0deg)}   to{transform:rotate(-360deg)} }
         @keyframes fl1 { 0%,100%{opacity:.75} 50%{opacity:.50} }
@@ -70,33 +69,25 @@
         .vtx:nth-child(odd)  { animation-duration: 2.2s; }
         .vtx:nth-child(even) { animation-duration: 4.1s; animation-delay: 0.8s; }
 
-        /* ══════════════════════════════════════
-           OVAL IMAGE RING ANIMATIONS (NEW)
-        ══════════════════════════════════════ */
 
-        /* Rings spin using CSS transform on the oval ring divs */
         @keyframes oval-ring-cw  { from{transform:rotate(0deg)}  to{transform:rotate(360deg)}  }
         @keyframes oval-ring-ccw { from{transform:rotate(0deg)}  to{transform:rotate(-360deg)} }
 
-        /* Rings fade in/out (breathe) */
         @keyframes oval-pulse {
             0%,100%{ opacity: 0.45; }
             50%    { opacity: 0.90; }
         }
 
-        /* Shockwave: the oval itself scales out and fades */
         @keyframes oval-shockwave {
             0%  { transform: scale(1.00); opacity: 0.70; }
             100%{ transform: scale(1.50); opacity: 0.00; }
         }
 
-        /* Thirdy glow */
         @keyframes title-glow {
             0%,100%{ text-shadow: 0 0 20px #ff4422, 0 0 50px #cc1100, 0 0 90px #880000; }
             50%    { text-shadow: 0 0 40px #ff9944, 0 0 90px #ff4422, 0 0 130px #cc1100; }
         }
 
-        /* ── NAV ── */
         nav {
             position: fixed;
             top: 0;
@@ -109,7 +100,6 @@
         nav a  { color:#ffffff; text-decoration:none; font-size:18px; }
         nav a:hover, nav a.active { color:#ff6b6b; }
 
-        /* ── HERO ── */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -131,23 +121,15 @@
             z-index: 2;
         }
 
-        /* ── IMAGE SECTION ── */
         .image-section {
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
-            /* make the section tall enough to contain the rings */
+    
             height: 620px;
         }
 
-        /*
-         * All oval rings share the SAME dimensions + border-radius as the image.
-         * They are stacked absolutely over the image via the shared parent.
-         * border-radius: 50% / 60%  →  matches .oval-image exactly
-         */
-
-        /* Base shared style for all ring / shockwave divs */
         .oval-image,
         .oval-ring-1,
         .oval-ring-2,
@@ -160,7 +142,6 @@
             position: absolute;
         }
 
-        /* The actual photo */
         .oval-image {
             background: radial-gradient(ellipse, #ff6b6b 0%, #ff4444 50%, #cc3333 100%);
             box-shadow:
@@ -172,7 +153,6 @@
         }
         .profile-image { width:100%; height:100%; object-fit:cover; }
 
-        /* Ring 1 — just outside, spins CW, ember dot at top */
         .oval-ring-1 {
             width: 476px;
             height: 582px;
@@ -181,7 +161,7 @@
             z-index: 3;
             animation: oval-ring-cw 14s linear infinite, oval-pulse 4s ease-in-out infinite;
         }
-        /* glowing dot riding the top of ring 1 */
+
         .oval-ring-1::before {
             content: '';
             position: absolute;
@@ -195,7 +175,6 @@
             box-shadow: 0 0 10px #ff4422, 0 0 22px #ff4422, 0 0 38px #ff4422;
         }
 
-        /* Ring 2 — slightly bigger, spins CCW, gold dot at bottom */
         .oval-ring-2 {
             width: 502px;
             height: 614px;
@@ -217,7 +196,6 @@
             box-shadow: 0 0 8px #ff9944, 0 0 18px #ff9944, 0 0 30px #ff9944;
         }
 
-        /* Ring 3 — outermost, very slow CW, faint */
         .oval-ring-3 {
             width: 530px;
             height: 648px;
@@ -227,7 +205,6 @@
             animation: oval-ring-cw 38s linear infinite;
         }
 
-        /* Shockwave 1 */
         .oval-shock-1 {
             background: transparent;
             border: 2px solid rgba(255, 68, 34, 0.65);
@@ -235,7 +212,6 @@
             animation: oval-shockwave 3.2s ease-out infinite;
         }
 
-        /* Shockwave 2 — offset by half cycle */
         .oval-shock-2 {
             background: transparent;
             border: 1.5px solid rgba(204, 17, 0, 0.50);
@@ -243,7 +219,7 @@
             animation: oval-shockwave 3.2s ease-out infinite 1.6s;
         }
 
-        /* ── TEXT ── */
+    
         .text-section h1 { font-size:50px; margin-bottom:15px; }
         .text-section h1 span { color:#ff6b6b; }
 
@@ -295,7 +271,6 @@
         }
         .start-btn:hover { background-color:#ff5252; }
 
-        /* ── RESPONSIVE ── */
         @media (max-width:1024px){
             .hero-container { grid-template-columns:1fr; text-align:center; }
             .social-icons   { justify-content:center; }
@@ -326,7 +301,6 @@
 </head>
 <body>
 
-    <!-- ── ANIMATED BACKGROUND (100% UNCHANGED) ── -->
     <div class="bg-canvas">
       <svg width="100%" height="100%" viewBox="0 0 1440 900"
            preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
@@ -498,14 +472,12 @@
         <div class="hero-container">
 
             <div class="image-section">
-                <!-- shockwaves (outermost, z-index 0) -->
+            
                 <div class="oval-shock-1"></div>
                 <div class="oval-shock-2"></div>
-                <!-- spinning oval rings -->
                 <div class="oval-ring-3"></div>
                 <div class="oval-ring-2"></div>
                 <div class="oval-ring-1"></div>
-                <!-- photo on top -->
                 <div class="oval-image">
                     <img src="image1.jpg" alt="Thirdy" class="profile-image">
                 </div>
